@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>015E4B0A-1CEE-4624-BBEF-9004644F94AC</string>
+	<key>IDESourceControlProjectName</key>
+	<string>TelstraProficiency</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>09CF389CD4C447240C5E743B60420604CF90E358</key>
+		<string>https://github.com/ganesan89/iOS-Proficiency-.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>TelstraProficiency.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>09CF389CD4C447240C5E743B60420604CF90E358</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/ganesan89/iOS-Proficiency-.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>09CF389CD4C447240C5E743B60420604CF90E358</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>09CF389CD4C447240C5E743B60420604CF90E358</string>
+			<key>IDESourceControlWCCName</key>
+			<string>iOS-Proficiency-</string>
+		</dict>
+	</array>
+</dict>
+</plist>
