@@ -7,10 +7,6 @@
 //
 
 #import "ViewController.h"
-#import "Reachablity/Reachability.h"
-#import "TelstraProficiencyConstants.h"
-#import "TelstraProficiencyUtilities.h"
-#import "JsonModel.h"
 
 @interface ViewController ()
 {
@@ -85,51 +81,74 @@
  * void return type
  */
 -(void)onPerformSerivceCall {
-    //For displaying the loading activity for entire application
-    [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
     //set loading activity at center for all orientation
     activityView.center = self.view.center;
     BOOL isCheckReachablityForNetwork = [[Reachability reachabilityForInternetConnection] currentReachabilityStatus] != NotReachable;
     if (isCheckReachablityForNetwork) {
-        [activityView startAnimating];
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-        dispatch_async(queue, ^{
-            NSError *error = nil;
-            NSURL *url = [NSURL URLWithString:serviceUrl];
-            NSString *jsonString = [NSString stringWithContentsOfURL:url
-                                                      encoding:NSASCIIStringEncoding
-                                                         error:&error];
-            if (jsonString != nil) {
-                NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-                NSMutableDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                
-                self.feedsListArray = [[NSMutableArray alloc]init];
-                // Iterating number of records in json feeds
-                for(NSDictionary *rowItem in [responseDictionary objectForKey:@"rows"]) {
-                    JsonModel *jsonModelObj = [[JsonModel alloc]init];
-                    jsonModelObj.titleString = [TelstraProficiencyUtilities emptyCheck:[rowItem objectForKey:@"title"]];
-                    jsonModelObj.descriptionString = [TelstraProficiencyUtilities emptyCheck:[rowItem objectForKey:@"description"]];
-                    jsonModelObj.imageUrl = [TelstraProficiencyUtilities emptyCheck:[rowItem objectForKey:@"imageHref"]];
-                    
-                    //Storing Model Objects
-                    [self.feedsListArray addObject:jsonModelObj];
-                };
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [activityView stopAnimating];
-                    [self.feedsListView reloadData];
-                });
-            }
-            
-           [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
-        });
+       
+        // Class to invoke Webservice call to fetch JSON Response
+        TelstraServiceCall *telstraServiceCall = [[TelstraServiceCall alloc]init];
+        telstraServiceCall.serviceCallDelegate = self;
+        [telstraServiceCall initWithRequestUrl:serviceUrl];
+        [self startActivityIndicator];
+        
     }else{
         
-        [activityView stopAnimating];
-        [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
+        [self stopActivityIndicator];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:internetErrorType message:internetConnectivityError delegate:nil cancelButtonTitle:alertOkText otherButtonTitles:nil];
         [alert show];
     }
+}
+
+//Method for start activity Indicator
+-(void)startActivityIndicator {
+    //For displaying the loading activity for entire application
+    [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
+     [activityView startAnimating];
+}
+
+//Method for stop activityIndicator
+-(void)stopActivityIndicator {
+    
+    [activityView stopAnimating];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
+}
+
+#pragma mark Service Response 
+// delegate method which contains the service response
+-(void)serviceSuccessResponse:(NSMutableDictionary*)responseDictionary {
+    
+    [self stopActivityIndicator];
+    self.feedsListArray = [[NSMutableArray alloc]init];
+    // Iterating number of records in json feeds
+    for(NSDictionary *rowItem in [responseDictionary objectForKey:@"rows"]) {
+        
+        JsonModel *jsonModelObj = [[JsonModel alloc]init];
+        jsonModelObj.titleString = [TelstraProficiencyUtilities emptyCheck:[rowItem objectForKey:@"title"]];
+        jsonModelObj.descriptionString = [TelstraProficiencyUtilities emptyCheck:[rowItem objectForKey:@"description"]];
+        jsonModelObj.imageUrl = [TelstraProficiencyUtilities emptyCheck:[rowItem objectForKey:@"imageHref"]];
+        
+        if (!([jsonModelObj.titleString isEqualToString:@""] && [jsonModelObj.descriptionString isEqualToString:@""] && [jsonModelObj.imageUrl isEqualToString:@""])) {
+            
+            //Storing Model Objects
+            [self.feedsListArray addObject:jsonModelObj];
+        }
+    };
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.feedsListView reloadData];
+    });
+}
+
+//delegate method which contains the error message at the time of failure
+-(void)serviceFailedStatus:(NSError *)error {
+    
+    [self stopActivityIndicator];
+    NSString *errorDescription=[error.userInfo objectForKey:@"NSLocalizedDescription"];
+    NSLog(@"serviceFailsErrror:%@",errorDescription);
+    
+    UIAlertView *failureAlert = [[UIAlertView alloc]initWithTitle:serviceCallAlertTitle message:errorDescription delegate:nil cancelButtonTitle:alertOkText otherButtonTitles:nil];
+    [failureAlert show];
 }
 
 #pragma mark Orientation Handling
@@ -154,11 +173,12 @@
 //Display TableView cell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    FeedListCell *feedListCell = (FeedListCell*)[tableView dequeueReusableCellWithIdentifier:tableCellIdentifier];
+    static NSString *cellIdentifier = tableCellIdentifier;
+    FeedListCell *feedListCell = (FeedListCell*)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     feedListCell.backgroundColor=[UIColor clearColor];
     
     if (feedListCell == nil){
-        feedListCell = [[FeedListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:tableCellIdentifier];
+        feedListCell = [[FeedListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
     JsonModel *jsonModelObj = [self.feedsListArray objectAtIndex:indexPath.row];
@@ -173,15 +193,16 @@
     //Adjust the label to the new height.
     CGRect descriptionFrame = feedListCell.descriptionLabel.frame;
     // Set Description text frame
-    [feedListCell.descriptionLabel setFrame:CGRectMake(descriptionFrame.origin.x, feedListCell.titleLabel.frame.origin.y+feedListCell.titleLabel.frame.size.height, descriptionFrame.size.width, descriptionRect.size.height)];
-    
+    [feedListCell.descriptionLabel setFrame:CGRectMake(descriptionFrame.origin.x, descriptionFrame.origin.y, descriptionFrame.size.width, descriptionRect.size.height)];
+ 
     //setting dummy image
     [feedListCell.cellImageView setImage:noImage];
     
     if (![jsonModelObj.imageUrl isEqualToString:@""]) {
         
         if (![imageCacheDictionary valueForKey:jsonModelObj.imageUrl]) {
-            [NSURLConnection sendAsynchronousRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:jsonModelObj.imageUrl]] queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+            // Image lazyloading
+            [NSURLConnection sendAsynchronousRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:jsonModelObj.imageUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60] queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
                 NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
                 if (httpResponse.statusCode == 200) {
                     feedListCell.cellImageView.image = [UIImage imageWithData:data];
@@ -190,32 +211,16 @@
                 } else {
                     // Load empty Image
                     [feedListCell.cellImageView setImage:noImage];
+                    NSData *emptyImageData = UIImagePNGRepresentation(noImage);
+                    [imageCacheDictionary setObject:emptyImageData forKey:jsonModelObj.imageUrl];
                 }
             }];
         } else {
-            // Assign image from local cache
+            // assign image from local cache
             feedListCell.cellImageView.image = [UIImage imageWithData:[imageCacheDictionary valueForKey:jsonModelObj.imageUrl]];
         }
     }
     return feedListCell;
-}
-
-//Setting background color for the cell
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cellCustom forRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    [cellCustom setBackgroundColor:[UIColor clearColor]];
-    CAGradientLayer *gradientlayer = [CAGradientLayer layer];
-        gradientlayer.frame = cellCustom.bounds;
-    
-    gradientlayer.colors = [NSArray arrayWithObjects:(id)tableCellWhiteGradientColor, (id)[tableCellGradientColor, nil];
-    [cellCustom setBackgroundView:[[UIView alloc] init]];
-    [cellCustom.backgroundView.layer insertSublayer:gradientlayer atIndex:0];
-    
-    CAGradientLayer *selectedGradientColor = [CAGradientLayer layer];
-    selectedGradientColor.frame = cellCustom.bounds;
-    selectedGradientColor.colors = [NSArray arrayWithObjects:(id)tableCellWhiteGradientColor, (id)[selectedTableCellGradientColor, nil];
-    [cellCustom setSelectedBackgroundView:[[UIView alloc] init]];
-    [cellCustom.selectedBackgroundView.layer insertSublayer:selectedGradientColor atIndex:0];
 }
 
 // Returns Tableview height
@@ -242,7 +247,7 @@
 {
     //Calculate height of the description text
    CGSize descSize = CGSizeMake(screenWidth - (imageSize+50) ,0);
-    UIFont *descFont = [UIFont systemFontOfSize:12];
+   UIFont *descFont = [UIFont systemFontOfSize:13];
 
     NSAttributedString *attrString =
     [[NSAttributedString alloc] initWithString:text

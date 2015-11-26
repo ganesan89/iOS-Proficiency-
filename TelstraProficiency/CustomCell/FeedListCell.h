@@ -13,5 +13,6 @@
 @property (strong,nonatomic) UILabel *titleLabel;
 @property (strong,nonatomic) UILabel *descriptionLabel;
 @property (strong,nonatomic) UIImageView *cellImageView;
+@property (nonatomic, strong) NSURLSessionDataTask *imageDownloadTask;
 
 @end

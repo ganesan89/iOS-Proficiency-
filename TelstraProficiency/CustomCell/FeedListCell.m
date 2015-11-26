@@ -20,7 +20,7 @@
         //Displays Title String from the service
         self.titleLabel = [[UILabel alloc]initWithFrame:CGRectZero];
         self.titleLabel.backgroundColor = [UIColor clearColor];
-        self.titleLabel.font=[UIFont boldSystemFontOfSize:15];
+        self.titleLabel.font=[UIFont boldSystemFontOfSize:16];
         self.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         self.titleLabel.textAlignment = NSTextAlignmentLeft;
         self.titleLabel.textColor = titleTextColor;
@@ -30,8 +30,8 @@
         self.descriptionLabel = [[UILabel alloc]initWithFrame:CGRectZero];
         self.descriptionLabel.numberOfLines = 0;
         self.descriptionLabel.backgroundColor = [UIColor clearColor];
-        self.descriptionLabel.font=[UIFont systemFontOfSize:12];
-        self.descriptionLabel.textAlignment = NSTextAlignmentLeft;
+        self.descriptionLabel.font=[UIFont systemFontOfSize:13];
+        self.descriptionLabel.textAlignment = NSTextAlignmentJustified;
         self.descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
         [self.contentView addSubview:self.descriptionLabel];
         
@@ -44,11 +44,21 @@
 
 // For Resizing the subviews in the UItableViewCell
 - (void)layoutSubviews {
+    //Setting Gradient Color for UitableView Cell
+    [self setBackgroundColor:[UIColor clearColor]];
+    CAGradientLayer *gradientlayer = [CAGradientLayer layer];
+    gradientlayer.frame = self.bounds;
+    
+    gradientlayer.colors = [NSArray arrayWithObjects:(id)tableCellWhiteGradientColor, (id)[tableCellGradientColor, nil];
+    [self setBackgroundView:[[UIView alloc] init]];
+    [self.backgroundView.layer insertSublayer:gradientlayer atIndex:0];
+    
     [super layoutSubviews];
    
+     // Resizing the Cell item frame
     [self.titleLabel setFrame:CGRectMake(10, 5, screenWidth-(imageSize+10),titleLabelHeight)];
-    [self.descriptionLabel setFrame:CGRectMake(10, titleLabelHeight+5, screenWidth-(imageSize+15),self.descriptionLabel.frame.size.height)];
+    [self.descriptionLabel setFrame:CGRectMake(10, titleLabelHeight, screenWidth-(imageSize+15),self.descriptionLabel.frame.size.height)];
     
-    [self.cellImageView setFrame:CGRectMake(screenWidth-(imageSize+10), 10, imageSize, imageSize)];
+    [self.cellImageView setFrame:CGRectMake(screenWidth-(imageSize+5), 15, imageSize, imageSize)];
 }
 @end

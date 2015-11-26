@@ -16,6 +16,7 @@
 		641CC7C81C0320FD00130688 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 641CC7C71C0320FD00130688 /* Reachability.m */; };
 		641CC7CC1C03223B00130688 /* JsonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 641CC7CB1C03223B00130688 /* JsonModel.m */; };
 		641CC7CF1C032F1200130688 /* TelstraProficiencyUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 641CC7CE1C032F1200130688 /* TelstraProficiencyUtilities.m */; };
+		94CB697D1C071377006A34B1 /* TelstraServiceCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 94CB697C1C071377006A34B1 /* TelstraServiceCall.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,8 @@
 		641CC7CB1C03223B00130688 /* JsonModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonModel.m; sourceTree = "<group>"; };
 		641CC7CD1C032F1200130688 /* TelstraProficiencyUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TelstraProficiencyUtilities.h; sourceTree = "<group>"; };
 		641CC7CE1C032F1200130688 /* TelstraProficiencyUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TelstraProficiencyUtilities.m; sourceTree = "<group>"; };
+		94CB697B1C071377006A34B1 /* TelstraServiceCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TelstraServiceCall.h; sourceTree = "<group>"; };
+		94CB697C1C071377006A34B1 /* TelstraServiceCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TelstraServiceCall.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +99,7 @@
 				641CC7B81C03126300130688 /* CustomCell */,
 				641CC7C91C03222900130688 /* Model */,
 				641CC7B71C03124C00130688 /* ViewController */,
+				94CB697A1C071280006A34B1 /* Service */,
 				641CC7C51C0320FD00130688 /* Reachablity */,
 				641CC79E1C0311A700130688 /* Images.xcassets */,
 				641CC7911C0311A700130688 /* Supporting Files */,
@@ -175,6 +179,16 @@
 			);
 			path = Model;
 			sourceTree = "<group>";
+		};
+		94CB697A1C071280006A34B1 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				94CB697B1C071377006A34B1 /* TelstraServiceCall.h */,
+				94CB697C1C071377006A34B1 /* TelstraServiceCall.m */,
+			);
+			name = Service;
+			path = TelstraProficiency/Service;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -277,6 +291,7 @@
 				641CC79A1C0311A700130688 /* ViewController.m in Sources */,
 				641CC7BE1C03137200130688 /* FeedListCell.m in Sources */,
 				641CC7971C0311A700130688 /* AppDelegate.m in Sources */,
+				94CB697D1C071377006A34B1 /* TelstraServiceCall.m in Sources */,
 				641CC7CC1C03223B00130688 /* JsonModel.m in Sources */,
 				641CC7941C0311A700130688 /* main.m in Sources */,
 				641CC7CF1C032F1200130688 /* TelstraProficiencyUtilities.m in Sources */,

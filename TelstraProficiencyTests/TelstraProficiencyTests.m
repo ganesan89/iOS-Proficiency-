@@ -49,6 +49,7 @@
     XCTAssertTrue([self.testViewController conformsToProtocol:@protocol(UITableViewDelegate) ], @"View does not conform to UITableView delegate protocol");
 }
 
+
 #pragma mark - TestCase for lazy Loading
 
 -(void)testWebserviceCall {

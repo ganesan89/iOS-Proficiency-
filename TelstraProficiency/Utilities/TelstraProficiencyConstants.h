@@ -13,21 +13,21 @@
 #define tableCellIdentifier @"CellResuableIdentifier"
 #define internetErrorType @"Network Error"
 #define internetConnectivityError @"Internet not available "
+#define serviceCallAlertTitle @"Service Alert"
 #define alertOkText @"OK"
 #define emptyText @""
 
 #define screenWidth [[UIScreen mainScreen] bounds].size.width
 #define screenHeight [[UIScreen mainScreen] bounds].size.height
 #define noImage [UIImage imageNamed:@"noImage"]
-#define loading [UIImage imageNamed:@"loading.png"]
 
 #define titleTextColor [UIColor colorWithRed:67.0f/255.0f green:44.0f/255.0f blue:190.0f/255.0f alpha:1.0]
 #define tableCellWhiteGradientColor [[UIColor whiteColor] CGColor]
 #define tableCellGradientColor [UIColor  colorWithRed:(150.0/255.0) green:(150.0/255.0) blue:(150.0/255.0) alpha:1.0] CGColor]
 #define selectedTableCellGradientColor [UIColor colorWithRed:(150.0/255.0) green:(170.0/255.0) blue:(190.0/255.0) alpha:1.0] CGColor]
 
-#define imageSize 100
+#define imageSize 90
 #define tableCellHeight 130
-#define titleLabelHeight 40
+#define titleLabelHeight 30
 
 #endif
