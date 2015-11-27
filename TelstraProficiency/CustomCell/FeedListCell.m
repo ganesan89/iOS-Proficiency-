@@ -30,7 +30,7 @@
         self.descriptionLabel = [[UILabel alloc]initWithFrame:CGRectZero];
         self.descriptionLabel.numberOfLines = 0;
         self.descriptionLabel.backgroundColor = [UIColor clearColor];
-        self.descriptionLabel.font=[UIFont systemFontOfSize:13];
+        self.descriptionLabel.font=[UIFont systemFontOfSize:12];
         self.descriptionLabel.textAlignment = NSTextAlignmentJustified;
         self.descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
         [self.contentView addSubview:self.descriptionLabel];
@@ -57,8 +57,8 @@
    
      // Resizing the Cell item frame
     [self.titleLabel setFrame:CGRectMake(10, 5, screenWidth-(imageSize+10),titleLabelHeight)];
-    [self.descriptionLabel setFrame:CGRectMake(10, titleLabelHeight, screenWidth-(imageSize+15),self.descriptionLabel.frame.size.height)];
+    [self.descriptionLabel setFrame:CGRectMake(10, titleLabelHeight, screenWidth-(imageSize+25),self.descriptionLabel.frame.size.height)];
     
-    [self.cellImageView setFrame:CGRectMake(screenWidth-(imageSize+5), 15, imageSize, imageSize)];
+    [self.cellImageView setFrame:CGRectMake(screenWidth-(imageSize+5), titleLabelHeight, imageSize, imageSize)];
 }
 @end

@@ -247,7 +247,7 @@
 {
     //Calculate height of the description text
    CGSize descSize = CGSizeMake(screenWidth - (imageSize+50) ,0);
-   UIFont *descFont = [UIFont systemFontOfSize:13];
+   UIFont *descFont = [UIFont systemFontOfSize:12];
 
     NSAttributedString *attrString =
     [[NSAttributedString alloc] initWithString:text
